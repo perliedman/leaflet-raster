@@ -1,0 +1,20 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "raster-blaster": "^1.0.0"
+  },
+  "devDependencies": {
+    "rollup": "^1.21.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-resolve": "0.0.1-predev.1"
+  }
+}
