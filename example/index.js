@@ -10,24 +10,15 @@ const pipeline = new Pipeline([
   // new PipelineSteps.LinearContrast(0.0, 1.0),
   // new PipelineSteps.ColorMap('RdYlGn'),
   // new PipelineSteps.BandsToChannels({ a: 'a' })
-  new PipelineSteps.BandsToChannels({ r: 'r', g: 'g', b: 'b', a: 'a' }),
+  new PipelineSteps.BandsToChannels('rgba'),
   contrastStep,
 ],
 {
-  // Map (arbitrary) band names to their indices
-  bands: {
-    'r': 0,
-    'g': 1,
-    'b': 2,
-    'a': 3
-  },
+  bands: 'rgba',
   dataType: 'Uint8'
 })
 
-const renderer = new WebGlRenderer({
-  width: 256,
-  height: 256
-})
+const renderer = new WebGlRenderer()
 
 const renderFn = (canvas, getRasters) => renderer.render(canvas, pipeline, { getRasters })
 
@@ -48,9 +39,9 @@ GeoTIFF.fromUrl('data/ortho.tiff')
     contrastStep.low = 0.2 + Math.sin(t / 731) * 0.2
     contrastStep.high = 0.8 + Math.cos(t / 483) * 0.2
     geotiffLayer.render()
-    .then(() => setTimeout(update), 10)
+    .then(() => requestAnimationFrame(update), 10)
   }
 
-  update()
+  requestAnimationFrame(update)
 })
 
