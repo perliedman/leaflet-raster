@@ -12,7 +12,7 @@ as the glue between Leaflet and powerful libraries like [GeoTIFF.js](https://geo
 A small example using both GeoTIFF.js and raster-blaster:
 
 ```js
-import RasterLayer from '../src/index'
+import RasterLayer from 'leaflet-raster'
 import GeoTIFF from 'geotiff'
 import Pipeline from 'raster-blaster/src/pipeline'
 import * as PipelineSteps from 'raster-blaster/src/pipeline-steps'
