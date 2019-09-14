@@ -4,10 +4,12 @@ import Pipeline from 'raster-blaster/src/pipeline'
 import * as PipelineSteps from 'raster-blaster/src/pipeline-steps'
 import WebGlRenderer from 'raster-blaster/src/webgl/webgl-renderer'
 
-const contrastStep = new PipelineSteps.SmoothstepContrast(0.2, 0.8)
+const contrastStep = new PipelineSteps.SmoothstepContrast(-0.2, 0.2)
 const pipeline = new Pipeline([
-  new PipelineSteps.BandsToChannels('rgba'),
+  new PipelineSteps.GrayScale('($g - $r) / ($g + $r - $b)'),
   contrastStep,
+  new PipelineSteps.ColorMap('RdYlGn'),
+  new PipelineSteps.BandsToChannels('a')
 ],
 {
   bands: 'rgba',
@@ -16,7 +18,9 @@ const pipeline = new Pipeline([
 
 const renderer = new WebGlRenderer()
 
-const renderFn = (canvas, getRasters) => renderer.render(canvas, pipeline, getRasters)
+const renderFn = (canvas, getRasters) =>
+  renderer.render(canvas, pipeline, getRasters)
+  .catch(e => console.error(e))
 
 GeoTIFF.fromUrl('data/ortho.tiff')
 .then(tiff => {
@@ -25,6 +29,7 @@ GeoTIFF.fromUrl('data/ortho.tiff')
     width: size.x,
     height: size.y
   })
+  .catch(e => console.error(e))
   const geotiffLayer = new RasterLayer(tiff, rasterFn, renderFn)
 
   L.map('map', {
@@ -38,8 +43,8 @@ GeoTIFF.fromUrl('data/ortho.tiff')
 
   const update = () => {
     const t = +new Date()
-    contrastStep.low = 0.2 + Math.sin(t / 731) * 0.2
-    contrastStep.high = 0.8 + Math.cos(t / 483) * 0.2
+    contrastStep.low = -0.3 + Math.sin(t / 731) * 0.2
+    contrastStep.high = 0.3 + Math.cos(t / 483) * 0.2
     geotiffLayer.render()
     .then(() => requestAnimationFrame(update), 10)
   }
