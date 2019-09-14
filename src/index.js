@@ -1,13 +1,18 @@
 import L from 'leaflet'
 import LRU from 'lru-cache'
 
-const cache = new LRU(50)
+const globalCache = new LRU(50)
 
-const GeoTIFFLayer = L.GridLayer.extend({
-  initialize (tiff, renderFn, options) {
+const RasterLayer = L.GridLayer.extend({
+  options: {
+    cache: globalCache
+  },
+
+  initialize (tiff, rasterFn, renderFn, options) {
     L.GridLayer.prototype.initialize(options)
 
     this.tiff = tiff
+    this.rasterFn = rasterFn
     this.renderFn = renderFn
   },
 
@@ -43,12 +48,9 @@ const GeoTIFFLayer = L.GridLayer.extend({
     const key = this._tileCoordsToKey(coords)
     const nwSe = this._tileCoordsToNwSe(coords)
     const size = this.getTileSize()
+    const cache = this.options.cache
 
-    const dataFn = () => cache.get(key) || this.tiff.readRasters({
-      bbox: [nwSe[0].lng, nwSe[1].lat, nwSe[1].lng, nwSe[0].lat],
-      width: size.x,
-      height: size.y
-    })
+    const dataFn = () => cache.get(key) || this.rasterFn(nwSe, size)
     .then(rasters => {
       const data = rasters.map(r => ({
         data: r,
@@ -64,4 +66,4 @@ const GeoTIFFLayer = L.GridLayer.extend({
   }
 })
 
-export default GeoTIFFLayer
+export default RasterLayer

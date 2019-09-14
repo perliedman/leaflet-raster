@@ -1,4 +1,4 @@
-import GeoTIFFLayer from '../src/index'
+import RasterLayer from '../src/index'
 import GeoTIFF from 'geotiff'
 import Pipeline from 'raster-blaster/src/pipeline'
 import * as PipelineSteps from 'raster-blaster/src/pipeline-steps'
@@ -6,10 +6,6 @@ import WebGlRenderer from 'raster-blaster/src/webgl/webgl-renderer'
 
 const contrastStep = new PipelineSteps.SmoothstepContrast(0.2, 0.8)
 const pipeline = new Pipeline([
-  // new PipelineSteps.Index('$r+$g-$b'),
-  // new PipelineSteps.LinearContrast(0.0, 1.0),
-  // new PipelineSteps.ColorMap('RdYlGn'),
-  // new PipelineSteps.BandsToChannels({ a: 'a' })
   new PipelineSteps.BandsToChannels('rgba'),
   contrastStep,
 ],
@@ -24,7 +20,13 @@ const renderFn = (canvas, getRasters) => renderer.render(canvas, pipeline, getRa
 
 GeoTIFF.fromUrl('data/ortho.tiff')
 .then(tiff => {
-  const geotiffLayer = new GeoTIFFLayer(tiff, renderFn)
+  const rasterFn = (nwSe, size) => tiff.readRasters({
+    bbox: [nwSe[0].lng, nwSe[1].lat, nwSe[1].lng, nwSe[0].lat],
+    width: size.x,
+    height: size.y
+  })
+  const geotiffLayer = new RasterLayer(tiff, rasterFn, renderFn)
+
   L.map('map', {
     maxZoom: 26,
     layers: [
