@@ -4,7 +4,7 @@ import Pipeline from 'raster-blaster/src/pipeline'
 import * as PipelineSteps from 'raster-blaster/src/pipeline-steps'
 import WebGlRenderer from 'raster-blaster/src/webgl/webgl-renderer'
 
-const contrastStep = new PipelineSteps.LinearContrast(0.2, 0.8)
+const contrastStep = new PipelineSteps.SmoothstepContrast(0.2, 0.8)
 const pipeline = new Pipeline([
   // new PipelineSteps.Index('$r+$g-$b'),
   // new PipelineSteps.LinearContrast(0.0, 1.0),
@@ -20,7 +20,7 @@ const pipeline = new Pipeline([
 
 const renderer = new WebGlRenderer()
 
-const renderFn = (canvas, getRasters) => renderer.render(canvas, pipeline, { getRasters })
+const renderFn = (canvas, getRasters) => renderer.render(canvas, pipeline, getRasters)
 
 GeoTIFF.fromUrl('data/ortho.tiff')
 .then(tiff => {

@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "raster-blaster": "^1.0.0"
+    "raster-blaster": "^2.0.0"
   },
   "devDependencies": {
     "rollup": "^1.21.0",
