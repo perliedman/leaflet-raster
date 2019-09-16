@@ -5,10 +5,12 @@
   "main": "src/index.js",
   "scripts": {
     "build": "rollup -c",
-    "watch": "rollup -cw"
+    "watch": "rollup -cw",
+    "prepublishOnly": "npm run build"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["leaflet", "raster", "geotiff", "ndvi"],
+  "author": "Per Liedman <per@liedman.net>",
+  "homepage": "https://github.com/perliedman/leaflet-raster/",
   "license": "ISC",
   "devDependencies": {
     "rollup": "^1.21.0",
