@@ -1,0 +1,5 @@
+node_modules/
+example/node_modules/
+example/data/
+example/geotiff.bundle.js
+example/bundle.js
