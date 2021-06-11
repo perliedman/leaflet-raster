@@ -3,6 +3,8 @@ Leaflet Raster
 
 A simple plugin for powerful raster functions.
 
+**UNMAINTAINED** This repo never reached more than proof-of-concept status, feel free to check it out for ideas, but don't expect it to work. Sorry.
+
 This plugin makes it easy to add powerful raster processing to your Leaflet map,
 running directly in the browser. Examples can be hill shading, vegetation index analysis (NDVI for example) and much more.
 
