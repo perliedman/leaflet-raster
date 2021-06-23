@@ -1,3 +1,5 @@
+**This project never really took of, I'm not maintaining it and it's not likely to be very useful to you.**
+
 Leaflet Raster
 ==============
 
